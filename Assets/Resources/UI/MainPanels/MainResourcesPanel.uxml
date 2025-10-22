@@ -1,0 +1,13 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="background" style="flex-grow: 1; flex-direction: row;">
+        <ui:VisualElement style="flex-grow: 0; flex-basis: 20%;">
+            <ui:VisualElement style="flex-grow: 0; background-color: rgb(111, 61, 61); flex-basis: 25%;" />
+            <ui:VisualElement style="flex-grow: 0; background-color: rgb(61, 75, 99); flex-basis: 75%;">
+                <ui:TreeView name="treeView" virtualization-method="DynamicHeight" style="justify-content: center; align-self: auto; font-size: 28px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 0; background-color: rgb(147, 123, 137); flex-basis: 80%;">
+            <ui:ListView name="listView" virtualization-method="DynamicHeight" style="font-size: 28px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

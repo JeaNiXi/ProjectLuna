@@ -1,32 +1,26 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/UIMain/Main_USS.uss?fileID=7433441132597879392&amp;guid=24bbc8822a4b565499c24fd9ff52963a&amp;type=3#Main_USS" />
-    <ui:VisualElement style="flex-grow: 1; flex-basis: 20%;">
-        <ui:VisualElement style="flex-grow: 0; flex-basis: 10%; background-color: rgb(61, 81, 101);">
-            <ui:TextField label="Дерево в наличии" placeholder-text="0" name="woodTextAmount" />
-        </ui:VisualElement>
-        <ui:VisualElement style="flex-grow: 1; background-color: rgb(135, 121, 121); flex-direction: row;">
-            <ui:VisualElement style="flex-grow: 0; flex-basis: 10%; background-color: rgb(130, 97, 97);">
-                <ui:Button text="Ресурсы" />
-                <ui:Button text="Здания" />
-                <ui:Button text="Склад" />
+    <ui:VisualElement name="mainScreen" class="main-background" style="flex-grow: 1; flex-basis: 100%; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0);">
+        <ui:VisualElement name="upper" style="flex-grow: 0; flex-basis: 18%; background-color: rgba(0, 0, 0, 0); flex-direction: row;">
+            <ui:VisualElement name="infoElement" style="flex-grow: 0; flex-basis: 15%;">
+                <ui:Label text="Элемент" style="align-self: stretch; justify-content: flex-start; align-content: auto; flex-direction: column; align-items: auto; flex-grow: 1; flex-shrink: 1; font-size: 32px; -unity-text-align: middle-center; flex-basis: auto;" />
             </ui:VisualElement>
-            <ui:VisualElement style="flex-grow: 1;">
-                <ui:VisualElement style="flex-grow: 0; flex-basis: 10%;" />
-                <ui:VisualElement style="flex-grow: 1;">
-                    <ui:VisualElement style="flex-grow: 1;" />
-                    <ui:VisualElement style="flex-grow: 1; flex-direction: row; align-content: flex-start;">
-                        <ui:VisualElement style="flex-grow: 0; flex-basis: 20%;">
-                            <ui:TreeView name="TreeView" />
-                        </ui:VisualElement>
-                        <ui:VisualElement style="flex-grow: 1; justify-content: center; align-items: stretch; flex-direction: column; align-self: auto; align-content: auto;">
-                            <ui:VisualElement style="flex-grow: 0; flex-basis: 15%; align-items: center; justify-content: center;">
-                                <ui:Label text="Дерево" />
-                            </ui:VisualElement>
-                            <ui:ProgressBar value="0" title="Сбор:" name="woodPB" style="transition-property: all; transition-duration: 0s; transition-timing-function: ease; transition-delay: 0s;" />
-                            <ui:Button text="Добывать" name="getWoodBtn" />
-                        </ui:VisualElement>
-                    </ui:VisualElement>
-                </ui:VisualElement>
+            <ui:VisualElement name="mapElement" style="flex-grow: 0; flex-basis: 70%;">
+                <ui:Label text="Элемент" style="align-self: stretch; justify-content: flex-start; align-content: auto; flex-direction: column; align-items: auto; flex-grow: 1; flex-shrink: 1; font-size: 32px; -unity-text-align: middle-center; flex-basis: auto;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="timeElement" style="flex-grow: 0; flex-basis: 15%;">
+                <ui:Label text="Элемент" style="align-self: stretch; justify-content: flex-start; align-content: auto; flex-direction: column; align-items: auto; flex-grow: 1; flex-shrink: 1; font-size: 32px; -unity-text-align: middle-center; flex-basis: auto;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="bottom" style="flex-grow: 0; background-color: rgba(0, 0, 0, 0); flex-direction: row; flex-basis: 82%;">
+            <ui:VisualElement name="categoriesElement" class="categories-element" style="flex-grow: 0; flex-basis: 15%; background-color: rgba(0, 0, 0, 0);">
+                <ui:Button text="Ресурсы" name="resourceButton" />
+                <ui:Button text="Строения" name="buildingsButton" />
+                <ui:Button text="Кнопка" />
+            </ui:VisualElement>
+            <ui:VisualElement name="mainView" class="main-view-element" style="flex-grow: 0; flex-basis: 70%;" />
+            <ui:VisualElement name="ledgerElement" class="ledger-element" style="flex-grow: 0; flex-basis: 15%;">
+                <ui:Label text="Элемент" style="align-self: stretch; justify-content: flex-start; align-content: auto; flex-direction: column; align-items: auto; flex-grow: 1; flex-shrink: 1; font-size: 32px; -unity-text-align: middle-center; flex-basis: auto;" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

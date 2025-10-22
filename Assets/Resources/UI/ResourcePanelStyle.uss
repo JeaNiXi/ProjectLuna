@@ -1,0 +1,35 @@
+.resource-panel {
+    flex-direction: row;
+    padding: 10px;
+    background-color: rgb(68, 68, 68);
+    margin: 5px;
+    border-width: 1px;
+    border-color: rgb(136, 136, 136);
+    min-width: 300px;
+    width: 100%; /* Растягивается на всю ширину ListView */
+    flex-grow: 1; /* Растягивается, если есть место */
+}
+
+.resource-panel > * {
+    margin-right: 10px;
+}
+
+.image-container {
+    flex-grow: 1;
+}
+
+.resource-name {
+    justify-content: flex-start;
+    align-self: center;
+}
+
+.collection-button {
+    min-width: 100px;
+    padding: 5px 15px;
+}
+
+.progress-bar {
+    flex-grow: 1;
+    align-self: center;
+    width: 100px;
+}

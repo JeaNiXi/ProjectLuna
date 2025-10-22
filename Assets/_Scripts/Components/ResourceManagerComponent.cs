@@ -6,4 +6,5 @@ using UnityEngine;
 public struct ResourceManagerComponent : IComponentData
 {
     public BlobAssetReference<ResourceBlob> ResourceBlobRef;
+
 }

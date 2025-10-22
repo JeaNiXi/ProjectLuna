@@ -1,0 +1,9 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Resources/UI/ResourcePanelStyle.uss?fileID=7433441132597879392&amp;guid=61dd9979dcc81584cbf71c4367c334c7&amp;type=3" />
+    <ui:VisualElement name="VisualElement" class="resource-panel">
+        <ui:VisualElement name="ImageContainer" style="flex-grow: 1;" />
+        <ui:Label text="Default" name="ResourceName" style="justify-content: flex-start; align-self: center;" />
+        <ui:Button text="Start" name="CollectionButton" />
+        <ui:ProgressBar value="22" title="Progress" name="ProgressBar" style="flex-grow: 1; align-self: center;" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -6,5 +6,5 @@ public class ResourceManagerSO : ScriptableObject
 {
     [Header("Все Ресурсы:")]
 
-    public List<ResourceSO> Resources;
+    public List<ResourceCategorySO> CategoriesList;
 }

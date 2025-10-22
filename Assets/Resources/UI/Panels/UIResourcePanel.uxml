@@ -1,0 +1,17 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="mainVE" style="flex-grow: 1; flex-basis: auto;">
+        <ui:VisualElement name="ve-upper" style="flex-grow: 0; flex-basis: 80%; flex-direction: row;">
+            <ui:VisualElement name="ve-up-info" style="flex-grow: 0; flex-basis: 20%;">
+                <ui:VisualElement style="flex-grow: 1;" />
+                <ui:VisualElement style="flex-grow: 1;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="up-controller" style="flex-grow: 0; flex-basis: 80%;">
+                <ui:VisualElement name="ve-resource-name" style="flex-grow: 0; flex-basis: 10%;">
+                    <ui:Label text="Label" name="resource-name-label" style="flex-grow: 1; font-size: 24px; -unity-text-align: middle-center;" />
+                </ui:VisualElement>
+                <ui:VisualElement style="flex-grow: 0; flex-basis: 90%;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="ve-lower" style="flex-grow: 0; flex-basis: 20%;" />
+    </ui:VisualElement>
+</ui:UXML>

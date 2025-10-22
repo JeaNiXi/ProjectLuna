@@ -6,5 +6,6 @@ public static class ResourceTypes
     {
         None,
         Wood,
+        Stone,
     }
 }

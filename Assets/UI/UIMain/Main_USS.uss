@@ -1,6 +1,0 @@
-VisualElement {
-}
-
-VisualElement > VisualElement > VisualElement > VisualElement > #woodPB > #unity-progress-bar > .unity-progress-bar__background > .unity-progress-bar__progress {
-    background-color: rgb(55, 141, 34);
-}
