@@ -9,6 +9,7 @@ public class ResourcePageController : IPageController
     private VisualElement page;
     private VisualTreeAsset resourcePanelAsset;
     private ResourceManagerSO data;
+    //private ResourceUIBridgeSO uiBridge;
     private TreeView treeView;
     private ListView listView;
 
@@ -18,6 +19,7 @@ public class ResourcePageController : IPageController
     {
         this.page = page;
         this.data = data as ResourceManagerSO;
+        //uiBridge = Resources.Load<ResourceUIBridgeSO>("UI/ResourceUIBridge");
         if (this.data == null)
             MainDebug.E0001WrongScriptableObjectCast(MainDebug.ErrorSeverity.Error, typeof(ResourceManagerSO).Name, data.GetType().Name);
         treeView = page.Q<TreeView>("treeView");
@@ -89,9 +91,13 @@ public class ResourcePageController : IPageController
             List<ResourceSO> resources = listView.itemsSource as List<ResourceSO>;
             ResourceSO resource = resources[index];
 
+            //ResourceDynamicDataStruct dynamicData = uiBridge.ResourceDynamicData.Find(d => d.ID == resource.ID);
+
             Label nameLabel = element.Q<Label>("resource-name-label");
+            //Label currentGatheringSpeed = element.Q<Label>("current-gathering-speed");
 
             nameLabel.text = resource.ResourceNameKey;
+            //currentGatheringSpeed.text = dynamicData.ID != null ? "Скорость сборааа !!! = " + dynamicData.GatheringSpeed : "нет скорости сбора";
         };
     }
     private void UpdateListView(string typeName)

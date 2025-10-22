@@ -8,7 +8,7 @@ public partial struct DebugAllResources : ISystem
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<ResourceManagerComponent>();
-        query = state.GetEntityQuery(typeof(ResourceManagerComponent));
+        query = state.GetEntityQuery(typeof(ResourceBaseData));
     }
     public void OnDestroy(ref SystemState state)
     {
