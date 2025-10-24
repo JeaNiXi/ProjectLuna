@@ -15,13 +15,19 @@ public static class MainDebug
     public enum ErrorType
     {
         E0001WrongScriptableObjectCast,
-        E0002SomeOtherError
+        E0002DataNotFoundInUIBridge,
+        E000XSomeOtherError
     }
     private static readonly string CriticalMessage = "CRITICAL ERROR! ";
 
     public static void E0001WrongScriptableObjectCast(ErrorSeverity severity, string SONeeded, string SOGot)
     {
         var message = $"Wrong Scriptable Object! Expected: {SONeeded}, but got {SOGot}";
+        CreateMessage(severity, message);
+    }
+    public static void E0002DataNotFoundInUIBridge(ErrorSeverity severity, string idSearched)
+    {
+        var message = $"Data not found in UI Bridge! Expected: {idSearched}";
         CreateMessage(severity, message);
     }
     public static void E0002SomeOtherError(params string[] args)

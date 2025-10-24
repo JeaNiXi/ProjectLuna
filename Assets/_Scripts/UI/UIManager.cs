@@ -17,6 +17,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private ResourceManagerSO resourceManagerSO;
     [SerializeField] private BuildingManagerSO buildingManagerSO;
 
+    //private IPageController resourcePageControllerRef;
+    //private ResourcePageController resourcePageController;
+
     private Button categoryResourceButton;
     private Button categoryBuildingsButton;
 
@@ -50,7 +53,16 @@ public class UIManager : MonoBehaviour
         InitializePagesDictionary();
         InitializeButtons();
         InitializeButtonEvents();
+        //GetControllerRefs();
     }
+    //private void Update()
+    //{
+    //    UpdateAllUI();
+    //}
+    //private void UpdateAllUI()
+    //{
+    //    resourcePageController.UpdateUI();
+    //}
     private void InitializePagesDictionary()
     {
         CachePage("resources", resourcesMainAsset, new ResourcePageController(), resourceManagerSO);
@@ -74,7 +86,19 @@ public class UIManager : MonoBehaviour
         newPage.style.display = DisplayStyle.None;
         cachedPages.Add(category, newPage);
         cachedPageControllers.Add(category, controller);
+        //switch(category)
+        //{
+        //    case "resources":
+        //        resourcePageControllerRef = controller;
+        //        break;
+        //    case "buildings":
+        //        break;
+        //}
     }
+    //private void GetControllerRefs()
+    //{
+    //    resourcePageController = (ResourcePageController)resourcePageControllerRef;
+    //}
     private void InitializeButtons()
     {
         categoryResourceButton = RootVE.Q<Button>("resourceButton");

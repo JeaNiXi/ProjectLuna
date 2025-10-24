@@ -5,9 +5,9 @@ using UnityEngine;
 public class InputBridge : MonoBehaviour
 {
     public static InputBridge Instance;
-    private World _world;
-    private EntityManager _entityManager;
-    private TimeControlWorker _timeControlWorker;
+    private World world;
+    private EntityManager entityManager;
+    private TimeControlWorker timeControlWorker;
 
     private void Awake()
     {
@@ -23,16 +23,16 @@ public class InputBridge : MonoBehaviour
     }
     private void InitializeECSConnection()
     {
-        _world = World.DefaultGameObjectInjectionWorld;
-        _entityManager = _world.EntityManager;
+        world = World.DefaultGameObjectInjectionWorld;
+        entityManager = world.EntityManager;
     }
     private void InitializeWorkers()
     {
-        _timeControlWorker = new TimeControlWorker();
+        timeControlWorker = new TimeControlWorker();
     }
 
     public void ToggleTimeState()
     {
-        _timeControlWorker.CreateTimeToggleRequestComponent(_entityManager);
+        timeControlWorker.CreateTimeToggleRequestComponent(entityManager);
     }
 }

@@ -10,5 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be67389a5111b634b806bddd1cc9eb76, type: 3}
-  m_Name: ResourceUIBridge
-  m_EditorClassIdentifier: Assembly-CSharp::ResourceUIBridge
+  m_Name: ResourceRuntimeBridge
+  m_EditorClassIdentifier: Assembly-CSharp::ResourceRuntimeBridgeSO
+  dataList: []

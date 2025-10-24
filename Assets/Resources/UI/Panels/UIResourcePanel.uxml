@@ -3,14 +3,16 @@
         <ui:VisualElement name="ve-upper" style="flex-grow: 0; flex-basis: 80%; flex-direction: row;">
             <ui:VisualElement name="ve-up-info" style="flex-grow: 0; flex-basis: 20%;">
                 <ui:VisualElement style="flex-grow: 1;" />
-                <ui:VisualElement style="flex-grow: 1;" />
+                <ui:VisualElement style="flex-grow: 1;">
+                    <ui:Button text="добавить +2" name="add-float" />
+                </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="up-controller" style="flex-grow: 0; flex-basis: 80%;">
                 <ui:VisualElement name="ve-resource-name" style="flex-grow: 0; flex-basis: 10%;">
                     <ui:Label text="Label" name="resource-name-label" style="flex-grow: 1; font-size: 24px; -unity-text-align: middle-center; background-color: rgb(83, 122, 178);" />
                 </ui:VisualElement>
                 <ui:VisualElement style="flex-grow: 0; flex-basis: 90%;">
-                    <ui:Label text="Label" name="current-gathering-speed" />
+                    <ui:Label text="Label" name="current-gathering-time" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
