@@ -21,4 +21,8 @@ public class BuildingsPageController : IPageController
     {
         page.style.display = DisplayStyle.None;
     }
+    public void UpdateUI()
+    {
+
+    }
 }

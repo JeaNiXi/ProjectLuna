@@ -17,6 +17,10 @@ public class ResourceSO : ScriptableObject
 
     public ResourceTypes.ResourceTypesList ResourceType;
 
+    public int resourceLevel;
+
     public float BaseGatheringTime;
     public float BaseGatheringAmount;
+
+    public float GatherAmountMultiplayerPerUpgrade;
 }

@@ -8,8 +8,16 @@ using UnityEngine;
 [Serializable]
 public class ResourceRuntimeData
 {
+    public bool IsUpdated;
     public FixedString128Bytes ID;
+    public int ResourceLevel;
+    public float GatheringAmount;
     public float GatheringTime;
+
+    public void SetUpdateStatusFalse()
+    {
+        IsUpdated = false;
+    }
 }
 
 
@@ -36,7 +44,10 @@ public class ResourceRuntimeBridgeSO : ScriptableObject
                 {
                     DynamicDataStruct.Add(resource.ID, new ResourceRuntimeData
                     {
+                        IsUpdated = false,
                         ID = resource.ID,
+                        ResourceLevel = resource.resourceLevel,
+                        GatheringAmount = resource.BaseGatheringAmount,
                         GatheringTime = resource.BaseGatheringTime
                     });
                     if (DynamicDataStruct.TryGetValue(resource.ID, out var value))
@@ -49,15 +60,38 @@ public class ResourceRuntimeBridgeSO : ScriptableObject
     }
     public ResourceRuntimeData GetData(string id)
     {
-        if(DynamicDataStruct.TryGetValue(id, out var value)) { return value; };
+        if (DynamicDataStruct.TryGetValue(id, out var value)) { return value; }
+        ;
         {
             MainDebug.E0002DataNotFoundInUIBridge(MainDebug.ErrorSeverity.Error, id);
             return null;
         }
     }
-    public void SetData(FixedString128Bytes id, ResourceRuntimeData data)
+    public void SetNewData(FixedString128Bytes id, int resourceLevel, float gatheringAmount)
+    {
+        if (DynamicDataStruct.ContainsKey(id.ToString()))
+        {
+            DynamicDataStruct[id.ToString()] = new ResourceRuntimeData
+            {
+                IsUpdated = true,
+                ID = id,
+                ResourceLevel = resourceLevel,
+                GatheringAmount = gatheringAmount,
+                GatheringTime = DynamicDataStruct[id.ToString()].GatheringTime,
+            };
+            RebuildList();
+        }
+    }
+    public void SetStatusUpdateFalse(FixedString128Bytes id)
     {
         if(DynamicDataStruct.ContainsKey(id.ToString()))
+        {
+            DynamicDataStruct[id.ToString()].SetUpdateStatusFalse();
+        }
+    }
+    public void SetData(FixedString128Bytes id, ResourceRuntimeData data)
+    {
+        if (DynamicDataStruct.ContainsKey(id.ToString()))
         {
             DynamicDataStruct[id.ToString()] = data;
             RebuildList();

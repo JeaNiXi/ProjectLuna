@@ -32,6 +32,7 @@ public class UIManager : MonoBehaviour
     private IPageController currentController;
     private string currentPageName;
 
+    private bool IsChangingPage = false;
 
     private void Awake()
     {
@@ -55,14 +56,16 @@ public class UIManager : MonoBehaviour
         InitializeButtonEvents();
         //GetControllerRefs();
     }
-    //private void Update()
-    //{
-    //    UpdateAllUI();
-    //}
-    //private void UpdateAllUI()
-    //{
-    //    resourcePageController.UpdateUI();
-    //}
+    private void LateUpdate()
+    {
+        UpdateUI();
+    }
+    private void UpdateUI()
+    {
+        if (!IsChangingPage && currentController != null)
+            currentController.UpdateUI();
+    }
+
     private void InitializePagesDictionary()
     {
         CachePage("resources", resourcesMainAsset, new ResourcePageController(), resourceManagerSO);
@@ -86,7 +89,7 @@ public class UIManager : MonoBehaviour
         newPage.style.display = DisplayStyle.None;
         cachedPages.Add(category, newPage);
         cachedPageControllers.Add(category, controller);
-        //switch(category)
+        //switch (category)
         //{
         //    case "resources":
         //        resourcePageControllerRef = controller;
@@ -113,18 +116,19 @@ public class UIManager : MonoBehaviour
     {
         if (currentPage != null && currentController != null)
         {
+            IsChangingPage = true;
             currentController.HidePage();
             Debug.Log("Hiding Page " + currentPageName);
-            //mainView.Remove(currentPage); Использовать если надо удалить страницу. Пока не делаю.
         }
-        if(cachedPages.TryGetValue(newPage, out var page) && cachedPageControllers.TryGetValue(newPage, out var newController))
+        if (cachedPages.TryGetValue(newPage, out var page) && cachedPageControllers.TryGetValue(newPage, out var newController))
         {
             mainView.Add(page);
             newController.ShowPage();
             currentPage = page;
             currentController = newController;
             currentPageName = newPage;
-            Debug.Log("Showing Page " +  newPage);
+            Debug.Log("Showing Page " + newPage);
+            IsChangingPage = false;
         }
     }
 
@@ -134,7 +138,7 @@ public class UIManager : MonoBehaviour
         {
             categoryResourceButton.clicked -= () => ShowPage("resources");
         }
-        if(categoryBuildingsButton != null)
+        if (categoryBuildingsButton != null)
         {
             categoryBuildingsButton.clicked -= () => ShowPage("buildings");
         }

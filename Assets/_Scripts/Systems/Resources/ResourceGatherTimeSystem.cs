@@ -11,12 +11,13 @@ public partial struct ResourceGatherTimeSystem : ISystem
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<ResourceManagerComponent>();
-        state.RequireForUpdate<ResourceRuntimeBridgeCompleted>();
+        //state.RequireForUpdate<ResourceRuntimeBridgeCompleted>();
         state.RequireForUpdate<ResourceGatherTimeFlag>();
     }
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
+        Debug.Log("Updating Now");
         var buffer = SystemAPI.GetSingletonBuffer<ResourceGatherTimeBuffer>();
         var ecb = new EntityCommandBuffer(Allocator.Temp);
 

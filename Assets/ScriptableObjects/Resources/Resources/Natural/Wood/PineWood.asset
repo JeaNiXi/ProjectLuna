@@ -18,5 +18,7 @@ MonoBehaviour:
   Icon: {fileID: 0}
   ResourceCategory: 1
   ResourceType: 1
+  resourceLevel: 0
   BaseGatheringTime: 5
   BaseGatheringAmount: 1
+  GatherAmountMultiplayerPerUpgrade: 2

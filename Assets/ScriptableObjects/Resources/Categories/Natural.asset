@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60f32314c16a9fb4eb6aa01f1ed43563, type: 3}
   m_Name: Natural
   m_EditorClassIdentifier: Assembly-CSharp::ResourceCategorySO
-  CategoryName: "\u041F\u0440\u0438\u0440\u043E\u0434\u043D\u0438\u0435 \u0420\u0435\u0441\u044B
-    \u0401\u041F\u0422"
+  CategoryName: "\u041F\u0440\u0438\u0440\u043E\u0434\u043D\u0438\u0435"
   TypeList:
   - {fileID: 11400000, guid: 852a83c5447f3cc41b1bf6cc9fc2f8a0, type: 2}
   - {fileID: 11400000, guid: b4ad70a7d25c07f469342a98d16600c5, type: 2}

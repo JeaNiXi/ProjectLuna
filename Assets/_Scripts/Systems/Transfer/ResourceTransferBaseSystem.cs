@@ -6,34 +6,27 @@ public partial class ResourceTransferBaseSystem : SystemBase
 {
     private ResourceRuntimeBridgeSO bridgeSO;
 
-
     protected override void OnCreate()
     {
-
     }
 
     protected override void OnUpdate()
     {
         if (bridgeSO == null)
-        {
             if (ResourceBridge.Instance == null)
                 return;
             else
                 bridgeSO = ResourceBridge.Instance.ResourceRuntimeBridgeSO;
-        }
-        var buffer = SystemAPI.GetSingletonBuffer<ResourceGatherTimeBuffer>();
-        if (buffer.Length == 0)
+
+        DynamicBuffer<ResourceGatherAmountBuffer> amountBufferComponent = SystemAPI.GetSingletonBuffer<ResourceGatherAmountBuffer>();
+        if (amountBufferComponent.Length == 0)
             return;
 
-        foreach (var change in buffer)
+        foreach (var change in amountBufferComponent)
         {
-            bridgeSO.SetData(change.ID, new ResourceRuntimeData
-            {
-                ID = change.ID,
-                GatheringTime = change.GatheringTimeChangedValue,
-            });
+            bridgeSO.SetNewData(change.ID, change.NewResourceLevel, change.NewGatheringAmount);
         }
-        buffer.Clear();
+        amountBufferComponent.Clear();
     }
 
     protected override void OnDestroy()

@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff7e954891a181e4d9c683775f918415, type: 3}
-  m_Name: OakWood
+  m_Name: TestWood3
   m_EditorClassIdentifier: Assembly-CSharp::ResourceSO
-  ID: r-oakwood
-  ResourceNameKey: NK_oakWood
-  Description: This is oakWood
+  ID: test3
+  ResourceNameKey: test3
+  Description: dfsgcfbc fgdfgvcbcv fdgfdgdfgd
   Icon: {fileID: 0}
-  ResourceCategory: 1
-  ResourceType: 1
+  ResourceCategory: 0
+  ResourceType: 0
   resourceLevel: 0
-  BaseGatheringTime: 3
-  BaseGatheringAmount: 3
+  BaseGatheringTime: 323
+  BaseGatheringAmount: 12
   GatherAmountMultiplayerPerUpgrade: 2
