@@ -5,6 +5,6 @@ using UnityEngine;
 public struct ResourceGatherTimeFlag : IComponentData
 {
     public FixedString128Bytes ID;
-    public float GatheringTimeChangeValue;
-    public FixedString128Bytes ModifierID;
+    public float CurrentGatheringTime;
+    public float GatheringTimeMultiplayer;
 }

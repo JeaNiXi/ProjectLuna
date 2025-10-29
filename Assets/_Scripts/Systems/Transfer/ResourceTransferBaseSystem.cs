@@ -17,7 +17,11 @@ public partial class ResourceTransferBaseSystem : SystemBase
                 return;
             else
                 bridgeSO = ResourceBridge.Instance.ResourceRuntimeBridgeSO;
-
+        CheckGatherAmountBuffer();
+        CheckGatherTimeBuffer();
+    }
+    private void CheckGatherAmountBuffer()
+    {
         DynamicBuffer<ResourceGatherAmountBuffer> amountBufferComponent = SystemAPI.GetSingletonBuffer<ResourceGatherAmountBuffer>();
         if (amountBufferComponent.Length == 0)
             return;
@@ -28,7 +32,17 @@ public partial class ResourceTransferBaseSystem : SystemBase
         }
         amountBufferComponent.Clear();
     }
-
+    private void CheckGatherTimeBuffer()
+    {
+        DynamicBuffer<ResourceGatherTimeBuffer> timeBuffercomponent = SystemAPI.GetSingletonBuffer<ResourceGatherTimeBuffer>();
+        if(timeBuffercomponent.Length == 0)
+            return;
+        foreach(var change in timeBuffercomponent)
+        {
+            bridgeSO.SetNewData(change.ID,change.NewGatheringTime);
+        }
+        timeBuffercomponent.Clear();
+    }
     protected override void OnDestroy()
     {
 

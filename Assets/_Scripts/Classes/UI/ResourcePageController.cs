@@ -44,6 +44,7 @@ public class ResourcePageController : IPageController
     private float currentTime = 0;
     private float updateTimer = 0.5f;
 
+    private bool ListViewNeedsUpdate;
     private bool ListViewHasBeenUpdated;
 
     public void InitializePage(VisualElement page, ScriptableObject data)
@@ -178,6 +179,13 @@ public class ResourcePageController : IPageController
                     CurrentGatheringAmount = combinedResourceData[index].ResourceRuntimeData.GatheringAmount,
                     GatheringAmountMultiplayer = combinedResourceData[index].ResourceSO.GatherAmountMultiplayerPerUpgrade,
                 });
+                var testEnt = entityManager.CreateEntity();
+                entityManager.AddComponentData(testEnt, new ResourceGatherTimeFlag
+                {
+                    ID = combinedResourceData[index].ID,
+                    CurrentGatheringTime = combinedResourceData[index].ResourceRuntimeData.GatheringTime,
+                    GatheringTimeMultiplayer = combinedResourceData[index].ResourceSO.GatherTimeMultiplayerPerUpgrade,
+                });
             };
             upgradeResourceMainBuilding.userData = handler;
             upgradeResourceMainBuilding.clicked += handler;
@@ -189,14 +197,17 @@ public class ResourcePageController : IPageController
     public void UpdateUI()
     {
         currentTime += Time.deltaTime;
+        ListViewNeedsUpdate = false;
         if (ListViewHasBeenUpdated && currentTime > updateTimer)
         {
-            Debug.Log("Updating UI");
+
             List<CombinedResourceData> items = currentCombinedResourceDataList;
             for (int i = 0; i < items.Count; i++)
             {
                 if (uiBridge.DynamicDataStruct.TryGetValue(items[i].ID.ToString(), out var newData) && newData.IsUpdated)
                 {
+                    if (!ListViewNeedsUpdate)
+                        ListViewNeedsUpdate = true;
                     CombinedResourceData tmpData = new CombinedResourceData(
                         uiBridge.DynamicDataStruct[items[i].ID.ToString()].ID,
                         items[i].ResourceSO,
@@ -207,7 +218,12 @@ public class ResourcePageController : IPageController
                 }
             }
             currentCombinedResourceDataList = listView.itemsSource as List<CombinedResourceData>;
-            listView.RefreshItems();
+            if (ListViewNeedsUpdate)
+            {
+                listView.RefreshItems();
+                ListViewNeedsUpdate = false;
+                Debug.Log("Updated UI");
+            }
             currentTime = 0;
         }
     }

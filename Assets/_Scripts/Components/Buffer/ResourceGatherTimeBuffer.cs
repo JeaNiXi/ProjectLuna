@@ -6,5 +6,5 @@ using UnityEngine;
 public struct ResourceGatherTimeBuffer : IBufferElementData
 {
     public FixedString128Bytes ID;
-    public float GatheringTimeChangedValue;
+    public float NewGatheringTime;
 }

@@ -25,16 +25,16 @@ public partial struct ResourceGatherAmountSystem : ISystem
             {
                 ID = flag.ValueRO.ID,
                 NewResourceLevel = GetNewResourceLevel(flag.ValueRO.ResourceLevel),
-                NewGatheringAmount = GetGatherAmountUpgradeFloat(flag.ValueRO.CurrentGatheringAmount, flag.ValueRO.GatheringAmountMultiplayer),
+                NewGatheringAmount = GetGatherAmountUpgrade(flag.ValueRO.CurrentGatheringAmount, flag.ValueRO.GatheringAmountMultiplayer),
             });
-            Debug.Log($"Upgraded Resource :{flag.ValueRO.ID.ToString()}, old amount: {flag.ValueRO.CurrentGatheringAmount}, new amount: {GetGatherAmountUpgradeFloat(flag.ValueRO.CurrentGatheringAmount, flag.ValueRO.GatheringAmountMultiplayer)}");
+            Debug.Log($"Upgraded Resource :{flag.ValueRO.ID.ToString()}, old amount: {flag.ValueRO.CurrentGatheringAmount}, new amount: {GetGatherAmountUpgrade(flag.ValueRO.CurrentGatheringAmount, flag.ValueRO.GatheringAmountMultiplayer)}");
             ecb.RemoveComponent<ResourceGatherAmountFlag>(entity);
             ecb.DestroyEntity(entity);
         }
         ecb.Playback(state.EntityManager);
         ecb.Dispose();
     }
-    private float GetGatherAmountUpgradeFloat(float currentGatherAmount, float multiplayer) => multiplayer * currentGatherAmount;
+    private float GetGatherAmountUpgrade(float currentGatherAmount, float multiplayer) => multiplayer * currentGatherAmount;
     private int GetNewResourceLevel(int oldLevel) => oldLevel++;
     public void OnDestroy(ref SystemState state)
     {

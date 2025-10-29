@@ -22,3 +22,4 @@ MonoBehaviour:
   BaseGatheringTime: 75
   BaseGatheringAmount: 34
   GatherAmountMultiplayerPerUpgrade: 2
+  GatherTimeMultiplayerPerUpgrade: 2

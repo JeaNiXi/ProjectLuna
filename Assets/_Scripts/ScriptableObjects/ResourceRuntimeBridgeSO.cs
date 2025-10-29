@@ -82,21 +82,27 @@ public class ResourceRuntimeBridgeSO : ScriptableObject
             RebuildList();
         }
     }
-    public void SetStatusUpdateFalse(FixedString128Bytes id)
-    {
-        if(DynamicDataStruct.ContainsKey(id.ToString()))
-        {
-            DynamicDataStruct[id.ToString()].SetUpdateStatusFalse();
-        }
-    }
-    public void SetData(FixedString128Bytes id, ResourceRuntimeData data)
+    public void SetNewData(FixedString128Bytes id, float gatheringTime)
     {
         if (DynamicDataStruct.ContainsKey(id.ToString()))
         {
-            DynamicDataStruct[id.ToString()] = data;
+            DynamicDataStruct[id.ToString()] = new ResourceRuntimeData
+            {
+                IsUpdated = true,
+                ID = id,
+                ResourceLevel = DynamicDataStruct[id.ToString()].ResourceLevel,
+                GatheringAmount = DynamicDataStruct[id.ToString()].GatheringAmount,
+                GatheringTime = gatheringTime,
+            };
             RebuildList();
         }
-        OnDataUpdated?.Invoke(id.ToString());
+    }
+    public void SetStatusUpdateFalse(FixedString128Bytes id)
+    {
+        if (DynamicDataStruct.ContainsKey(id.ToString()))
+        {
+            DynamicDataStruct[id.ToString()].SetUpdateStatusFalse();
+        }
     }
     private void RebuildList()
     {
@@ -107,5 +113,3 @@ public class ResourceRuntimeBridgeSO : ScriptableObject
         }
     }
 }
-
-
