@@ -13,6 +13,7 @@ public class ResourceRuntimeData
     public int ResourceLevel;
     public float GatheringAmount;
     public float GatheringTime;
+    public float UpgradeCost;
 
     public void SetUpdateStatusFalse()
     {
@@ -24,15 +25,12 @@ public class ResourceRuntimeData
 [CreateAssetMenu(fileName = "ResourceRuntimeBridge", menuName = "Scriptable Objects/Resources/ResourceRuntimeBridge")]
 public class ResourceRuntimeBridgeSO : ScriptableObject
 {
-
-    public event Action<string> OnDataUpdated;
-
-    public Dictionary<string, ResourceRuntimeData> DynamicDataStruct = new Dictionary<string, ResourceRuntimeData>();
+    public Dictionary<string, ResourceRuntimeData> DynamicData = new Dictionary<string, ResourceRuntimeData>();
     public List<ResourceRuntimeData> DataList = new List<ResourceRuntimeData>();
 
     public void InitializeDictionary(ResourceManagerSO data)
     {
-        DynamicDataStruct.Clear();
+        DynamicData.Clear();
         DataList.Clear();
         foreach (var category in data.CategoriesList)
         {
@@ -42,15 +40,16 @@ public class ResourceRuntimeBridgeSO : ScriptableObject
                 var currentType = type;
                 foreach (var resource in currentType.ResourceList)
                 {
-                    DynamicDataStruct.Add(resource.ID, new ResourceRuntimeData
+                    DynamicData.Add(resource.ID, new ResourceRuntimeData
                     {
                         IsUpdated = false,
                         ID = resource.ID,
                         ResourceLevel = resource.resourceLevel,
                         GatheringAmount = resource.BaseGatheringAmount,
-                        GatheringTime = resource.BaseGatheringTime
+                        GatheringTime = resource.BaseGatheringTime,
+                        UpgradeCost = resource.BaseUpgradeCost,
                     });
-                    if (DynamicDataStruct.TryGetValue(resource.ID, out var value))
+                    if (DynamicData.TryGetValue(resource.ID, out var value))
                     {
                         DataList.Add(value);
                     }
@@ -60,38 +59,39 @@ public class ResourceRuntimeBridgeSO : ScriptableObject
     }
     public ResourceRuntimeData GetData(string id)
     {
-        if (DynamicDataStruct.TryGetValue(id, out var value)) { return value; }
+        if (DynamicData.TryGetValue(id, out var value)) { return value; }
         ;
         {
             MainDebug.E0002DataNotFoundInUIBridge(MainDebug.ErrorSeverity.Error, id);
             return null;
         }
     }
-    public void SetNewData(FixedString128Bytes id, int resourceLevel, float gatheringAmount)
+    public void SetNewData(FixedString128Bytes id, int resourceLevel, float gatheringAmount, float upgradeCost)
     {
-        if (DynamicDataStruct.ContainsKey(id.ToString()))
+        if (DynamicData.ContainsKey(id.ToString()))
         {
-            DynamicDataStruct[id.ToString()] = new ResourceRuntimeData
+            DynamicData[id.ToString()] = new ResourceRuntimeData
             {
                 IsUpdated = true,
                 ID = id,
                 ResourceLevel = resourceLevel,
                 GatheringAmount = gatheringAmount,
-                GatheringTime = DynamicDataStruct[id.ToString()].GatheringTime,
+                GatheringTime = DynamicData[id.ToString()].GatheringTime,
+                UpgradeCost = upgradeCost,
             };
             RebuildList();
         }
     }
     public void SetNewData(FixedString128Bytes id, float gatheringTime)
     {
-        if (DynamicDataStruct.ContainsKey(id.ToString()))
+        if (DynamicData.ContainsKey(id.ToString()))
         {
-            DynamicDataStruct[id.ToString()] = new ResourceRuntimeData
+            DynamicData[id.ToString()] = new ResourceRuntimeData
             {
                 IsUpdated = true,
                 ID = id,
-                ResourceLevel = DynamicDataStruct[id.ToString()].ResourceLevel,
-                GatheringAmount = DynamicDataStruct[id.ToString()].GatheringAmount,
+                ResourceLevel = DynamicData[id.ToString()].ResourceLevel,
+                GatheringAmount = DynamicData[id.ToString()].GatheringAmount,
                 GatheringTime = gatheringTime,
             };
             RebuildList();
@@ -99,15 +99,15 @@ public class ResourceRuntimeBridgeSO : ScriptableObject
     }
     public void SetStatusUpdateFalse(FixedString128Bytes id)
     {
-        if (DynamicDataStruct.ContainsKey(id.ToString()))
+        if (DynamicData.ContainsKey(id.ToString()))
         {
-            DynamicDataStruct[id.ToString()].SetUpdateStatusFalse();
+            DynamicData[id.ToString()].SetUpdateStatusFalse();
         }
     }
     private void RebuildList()
     {
         DataList.Clear();
-        foreach (var item in DynamicDataStruct)
+        foreach (var item in DynamicData)
         {
             DataList.Add(item.Value);
         }

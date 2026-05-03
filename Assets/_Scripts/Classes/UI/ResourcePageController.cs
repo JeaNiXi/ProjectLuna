@@ -13,13 +13,15 @@ public class CombinedResourceData
     public FixedString128Bytes ID;
     public ResourceSO ResourceSO;
     public ResourceRuntimeData ResourceRuntimeData;
+    public ResourceRuntimeAmountData ResourceRuntimeAmountData;
     public bool isUpgradable;
 
-    public CombinedResourceData(FixedString128Bytes id, ResourceSO so, ResourceRuntimeData data, bool isUpgradable)
+    public CombinedResourceData(FixedString128Bytes id, ResourceSO so, ResourceRuntimeData data, ResourceRuntimeAmountData amountData, bool isUpgradable)
     {
         ID = id;
         ResourceSO = so;
         ResourceRuntimeData = data;
+        ResourceRuntimeAmountData = amountData;
         this.isUpgradable = isUpgradable;
     }
 }
@@ -29,6 +31,7 @@ public class ResourcePageController : IPageController
     private VisualTreeAsset resourcePanelAsset;
     private ResourceManagerSO data;
     private ResourceRuntimeBridgeSO uiBridge;
+    private ResourceRuntimeAmountSO uiAmountBridge;
     private TreeView treeView;
     private ListView listView;
 
@@ -44,7 +47,6 @@ public class ResourcePageController : IPageController
     private float currentTime = 0;
     private float updateTimer = 0.5f;
 
-    private bool ListViewNeedsUpdate;
     private bool ListViewHasBeenUpdated;
 
     public void InitializePage(VisualElement page, ScriptableObject data)
@@ -63,6 +65,9 @@ public class ResourcePageController : IPageController
         uiBridge = Resources.Load<ResourceRuntimeBridgeSO>("Resource/ResourceRuntimeBridge");
         if (uiBridge != null)
             Debug.Log("UI Bridge Loaded Successfuly! ");
+        uiAmountBridge = Resources.Load<ResourceRuntimeAmountSO>("Resource/ResourceRuntimeAmount");
+        if (uiAmountBridge != null)
+            Debug.Log("UI Amount Bridge Loaded Successfuly! ");
 
         InitializeData(this.data);
         InitializeTreeView();
@@ -133,7 +138,7 @@ public class ResourcePageController : IPageController
             List<CombinedResourceData> combinedResourceDataList = new List<CombinedResourceData>();
             foreach (var res in resList)
             {
-                combinedResourceDataList.Add(new CombinedResourceData(res.ID, res, uiBridge.GetData(res.ID), CanBeUpdated(res.ID.ToString())));
+                combinedResourceDataList.Add(new CombinedResourceData(res.ID, res, uiBridge.GetData(res.ID), uiAmountBridge.GetData(res.ID), CanBeUpdated(res.ID.ToString())));
             }
             listView.itemsSource = combinedResourceDataList;
             currentCombinedResourceDataList = combinedResourceDataList;
@@ -151,24 +156,47 @@ public class ResourcePageController : IPageController
         {
             List<CombinedResourceData> combinedResourceData = listView.itemsSource as List<CombinedResourceData>;
 
+            Label resourceLevelLabel = element.Q<Label>("resource-level-label");
             Label nameLabel = element.Q<Label>("resource-name-label");
             Label descriptionLabel = element.Q<Label>("description-label");
             Label currentGatheringTime = element.Q<Label>("current-gathering-time");
             Label currentGatheringAmount = element.Q<Label>("current-gathering-amount");
+            Label resourceAmountLabel = element.Q<Label>("resource-amount-label");
+            Label resourceUpgradeCostLabel = element.Q<Label>("resource-upgrade-cost");
+            Button startGatheringButton = element.Q<Button>("start-gathering-button");
             Button upgradeResourceMainBuilding = element.Q<Button>("upgrade-resource-main-building");
 
-
+            resourceLevelLabel.text = combinedResourceData[index].ResourceRuntimeData.ResourceLevel.ToString();
             nameLabel.text = combinedResourceData[index].ResourceSO.ResourceNameKey;
             descriptionLabel.text = combinedResourceData[index].ResourceSO.Description;
             currentGatheringTime.text = combinedResourceData[index].ResourceRuntimeData.GatheringTime.ToString();
             currentGatheringAmount.text = combinedResourceData[index].ResourceRuntimeData.GatheringAmount.ToString();
+            resourceAmountLabel.text = combinedResourceData[index].ResourceRuntimeAmountData.Amount.ToString();
+            resourceUpgradeCostLabel.text = combinedResourceData[index].ResourceRuntimeData.UpgradeCost.ToString();
 
-            if (upgradeResourceMainBuilding.userData is Action oldHandler)
+            if (startGatheringButton.userData is Action oldHandlerStartGathering)
             {
-                upgradeResourceMainBuilding.clicked -= oldHandler;
+                startGatheringButton.clicked -= oldHandlerStartGathering;
             }
-
-            Action handler = () =>
+            if (upgradeResourceMainBuilding.userData is Action oldHandlerUpgradeBuilding)
+            {
+                upgradeResourceMainBuilding.clicked -= oldHandlerUpgradeBuilding;
+            }
+            Action startGatheringHandler = () =>
+            {
+                startGatheringButton.text = "working!";
+                startGatheringButton.SetEnabled(false);
+                Debug.Log("startGatheringButton Clicked!");
+                var ent = entityManager.CreateEntity();
+                entityManager.AddComponentData(ent, new ResourceIsGatheringFlag
+                {
+                    ID = combinedResourceData[index].ID,
+                    Level = combinedResourceData[index].ResourceRuntimeData.ResourceLevel,
+                    BaseAmount = combinedResourceData[index].ResourceSO.BaseGatheringAmount,
+                    ProductionMultiplayer = combinedResourceData[index].ResourceSO.GatherAmountMultiplayerPerUpgrade,
+                });
+            };
+            Action upgradeBuildingHandler = () =>
             {
                 Debug.Log("upgrade-resource-main-building Button Clicked!");
                 var ent = entityManager.CreateEntity();
@@ -176,19 +204,29 @@ public class ResourcePageController : IPageController
                 {
                     ID = combinedResourceData[index].ID,
                     ResourceLevel = combinedResourceData[index].ResourceRuntimeData.ResourceLevel,
-                    CurrentGatheringAmount = combinedResourceData[index].ResourceRuntimeData.GatheringAmount,
+                    BaseGatheringAmount = combinedResourceData[index].ResourceSO.BaseGatheringAmount,
                     GatheringAmountMultiplayer = combinedResourceData[index].ResourceSO.GatherAmountMultiplayerPerUpgrade,
+                    BaseUpgradeCost = combinedResourceData[index].ResourceSO.BaseUpgradeCost,
+                    UpgradeCostMultiplayer = combinedResourceData[index].ResourceSO.UpgradeCostMultiplayer,
                 });
-                var testEnt = entityManager.CreateEntity();
-                entityManager.AddComponentData(testEnt, new ResourceGatherTimeFlag
-                {
-                    ID = combinedResourceData[index].ID,
-                    CurrentGatheringTime = combinedResourceData[index].ResourceRuntimeData.GatheringTime,
-                    GatheringTimeMultiplayer = combinedResourceData[index].ResourceSO.GatherTimeMultiplayerPerUpgrade,
-                });
-            };
-            upgradeResourceMainBuilding.userData = handler;
-            upgradeResourceMainBuilding.clicked += handler;
+                    //public FixedString128Bytes ID;
+                    //public int ResourceLevel;
+                    //public float BaseGatheringAmount;
+                    //public float GatheringAmountMultiplayer;
+                    //public float BaseUpgradeCost;
+                    //public float UpgradeCostMultiplayer;
+    //var testEnt = entityManager.CreateEntity();  //Пока не трогаем.
+    //entityManager.AddComponentData(testEnt, new ResourceGatherTimeFlag
+    //{
+    //    ID = combinedResourceData[index].ID,
+    //    CurrentGatheringTime = combinedResourceData[index].ResourceRuntimeData.GatheringTime,
+    //    GatheringTimeMultiplayer = combinedResourceData[index].ResourceSO.GatherTimeMultiplayerPerUpgrade,
+    //});
+};
+            startGatheringButton.userData = startGatheringHandler;
+            startGatheringButton.clicked += startGatheringHandler;
+            upgradeResourceMainBuilding.userData = upgradeBuildingHandler;
+            upgradeResourceMainBuilding.clicked += upgradeBuildingHandler;
             upgradeResourceMainBuilding.SetEnabled(combinedResourceData[index].isUpgradable);
         };
         Debug.Log("Updated List View");
@@ -197,41 +235,43 @@ public class ResourcePageController : IPageController
     public void UpdateUI()
     {
         currentTime += Time.deltaTime;
-        ListViewNeedsUpdate = false;
+        bool hasChanges = false;
         if (ListViewHasBeenUpdated && currentTime > updateTimer)
         {
-
             List<CombinedResourceData> items = currentCombinedResourceDataList;
             for (int i = 0; i < items.Count; i++)
             {
-                if (uiBridge.DynamicDataStruct.TryGetValue(items[i].ID.ToString(), out var newData) && newData.IsUpdated)
+                if (uiBridge.DynamicData.TryGetValue(items[i].ID.ToString(), out var newData))// && newData.IsUpdated)
                 {
-                    if (!ListViewNeedsUpdate)
-                        ListViewNeedsUpdate = true;
                     CombinedResourceData tmpData = new CombinedResourceData(
-                        uiBridge.DynamicDataStruct[items[i].ID.ToString()].ID,
+                        uiBridge.DynamicData[items[i].ID.ToString()].ID,
                         items[i].ResourceSO,
-                        uiBridge.DynamicDataStruct[items[i].ID.ToString()],
+                        uiBridge.DynamicData[items[i].ID.ToString()],
+                        uiAmountBridge.AmountData[items[i].ID.ToString()],
                         CanBeUpdated(items[i].ID.ToString()));
                     items[i] = tmpData;
                     uiBridge.SetStatusUpdateFalse(items[i].ID);
+                    //Debug.Log($"Can be updated = {CanBeUpdated(items[i].ID.ToString())}");
+                    if (!hasChanges)
+                        hasChanges = true;
                 }
             }
-            currentCombinedResourceDataList = listView.itemsSource as List<CombinedResourceData>;
-            if (ListViewNeedsUpdate)
+            if (hasChanges)
             {
-                listView.RefreshItems();
-                ListViewNeedsUpdate = false;
-                Debug.Log("Updated UI");
+                listView.itemsSource = items;
+                currentCombinedResourceDataList = listView.itemsSource as List<CombinedResourceData>;
             }
+            listView.RefreshItems();
+            //Debug.Log("Updated UI");
             currentTime = 0;
         }
     }
-    private bool CanBeUpdated(string id) // Need to add level to check.
+    private bool CanBeUpdated(string id)
     {
-        if (uiBridge.DynamicDataStruct.TryGetValue(id, out var newData))
+        if (uiAmountBridge.AmountData.TryGetValue(id, out var newData))
         {
-            if (newData.GatheringAmount >= 30f)
+            //Debug.Log($"New Date = {newData.Amount} and cost = {uiBridge.GetData(id.ToString()).UpgradeCost}");
+            if (newData.Amount >= uiBridge.GetData(id.ToString()).UpgradeCost)
                 return true;
             else
                 return false;
@@ -239,6 +279,7 @@ public class ResourcePageController : IPageController
         else
             return false;
     }
+
     public void ShowPage()
     {
         page.style.display = DisplayStyle.Flex;

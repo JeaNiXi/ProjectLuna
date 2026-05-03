@@ -150,6 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ResourceBridge
   ResourceManagerSO: {fileID: 11400000, guid: 19ccd6cbb9ea355479e0b9df3b5c9530, type: 2}
   ResourceRuntimeBridgeSO: {fileID: 11400000, guid: 674141e5716d9144d903bc19e6b49837, type: 2}
+  ResourceRuntimeAmountSO: {fileID: 11400000, guid: 4fdc5eb51cad6704faaf1753edc07087, type: 2}
 --- !u!4 &214358513
 Transform:
   m_ObjectHideFlags: 0

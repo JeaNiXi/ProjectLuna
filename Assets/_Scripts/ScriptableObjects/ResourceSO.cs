@@ -22,6 +22,8 @@ public class ResourceSO : ScriptableObject
     public float BaseGatheringTime;
     public float BaseGatheringAmount;
 
+    public float BaseUpgradeCost;
+    public float UpgradeCostMultiplayer;
     public float GatherAmountMultiplayerPerUpgrade;
     public float GatherTimeMultiplayerPerUpgrade;
 }

@@ -8,8 +8,7 @@ public class ResourceBridge : MonoBehaviour
 
     public ResourceManagerSO ResourceManagerSO;
     public ResourceRuntimeBridgeSO ResourceRuntimeBridgeSO;
-    private World world;
-    private EntityManager entityManager;
+    public ResourceRuntimeAmountSO ResourceRuntimeAmountSO;
 
     private void Awake()
     {
@@ -22,22 +21,15 @@ public class ResourceBridge : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        InitializeEntitySystems();
         InitializeResourceBridgeSO();
-        CreateBridgeCompletedComponent();
-    }
-    private void InitializeEntitySystems()
-    {
-        world = World.DefaultGameObjectInjectionWorld;
-        entityManager = world.EntityManager;
+        InitializeResourceRuntimeAmountSO();
     }
     private void InitializeResourceBridgeSO()
     {
         ResourceRuntimeBridgeSO.InitializeDictionary(ResourceManagerSO);
     }
-    private void CreateBridgeCompletedComponent()
+    private void InitializeResourceRuntimeAmountSO()
     {
-        Entity ResourceRuntimeEntity = entityManager.CreateEntity();
-        entityManager.AddComponentData(ResourceRuntimeEntity, new ResourceRuntimeBridgeCompleted());
+        ResourceRuntimeAmountSO.InitializeDictionary(ResourceManagerSO);
     }
 }
